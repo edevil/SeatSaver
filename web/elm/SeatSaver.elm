@@ -56,7 +56,7 @@ update action model =
       let
         updateSeat seatFromModel =
           if seatFromModel.seatNo == seatToToggle.seatNo then
-            { seatFromModel | occupied <- not seatFromModel.occupied }
+            { seatFromModel | occupied = not seatFromModel.occupied }
           else
             seatFromModel
       in
