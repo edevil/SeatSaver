@@ -9,12 +9,4 @@ config :seat_saver, SeatSaver.Endpoint,
 # Print only warnings and errors during test
 config :logger, level: :warn
 
-# Configure your database
-config :seat_saver, SeatSaver.Repo,
-  adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "phoenix1.0",
-  database: "seat_saver_test",
-  hostname: "azucker3.cloudapp.net",
-  parameters: [tcp_keepalives_idle: "30"],
-  pool: Ecto.Adapters.SQL.Sandbox
+import_config "test.secret.exs"

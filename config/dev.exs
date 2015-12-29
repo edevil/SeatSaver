@@ -32,12 +32,4 @@ config :logger, :console, format: "[$level] $message\n"
 # and calculating stacktraces is usually expensive.
 config :phoenix, :stacktrace_depth, 20
 
-# Configure your database
-config :seat_saver, SeatSaver.Repo,
-  adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "phoenix1.0",
-  database: "seat_saver_dev",
-  hostname: "azucker3.cloudapp.net",
-  parameters: [tcp_keepalives_idle: "30"],
-  pool_size: 10
+import_config "dev.secret.exs"
