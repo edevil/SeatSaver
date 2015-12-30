@@ -12,7 +12,7 @@ app = StartApp.start
   { init = init,
     update = update,
     view = view,
-    inputs = [] }
+    inputs = [incomingActions] }
 
 main : Signal Html
 main = app.html
@@ -31,7 +31,7 @@ init = ([], Effects.none)
 
 -- UPDATE
 
-type Action = Toggle Seat
+type Action = Toggle Seat | SetSeats Model
 
 update : Action -> Model -> (Model, Effects Action)
 update action model =
@@ -45,6 +45,8 @@ update action model =
             seatFromModel
       in
         (List.map updateSeat model, Effects.none)
+    SetSeats seats ->
+      (seats, Effects.none)
 
 
 -- VIEW
@@ -65,3 +67,7 @@ seatItem address seat =
 -- SIGNALS
 
 port seatLists : Signal Model
+
+incomingActions: Signal Action
+incomingActions =
+  Signal.map SetSeats seatLists

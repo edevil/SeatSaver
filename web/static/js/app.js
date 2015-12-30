@@ -23,3 +23,14 @@ import socket from "./socket"
 var elmDiv = document.getElementById('elm-main'),
     initialState = {seatLists: []},
     elmApp = Elm.embed(Elm.SeatSaver, elmDiv, initialState);
+
+// Now that you are connected, you can join channels with a topic:
+let channel = socket.channel("seats:planner", {})
+channel.join()
+  .receive("ok", resp => { console.log("Joined successfully", resp) })
+  .receive("error", resp => { console.log("Unable to join", resp) })
+
+channel.on("set_seats", data => {
+  console.log("got seats", data.seats)
+  elmApp.ports.seatLists.send(data.seats)
+})

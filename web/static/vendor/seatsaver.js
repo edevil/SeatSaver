@@ -11847,15 +11847,23 @@ Elm.SeatSaver.make = function (_elm) {
    });
    var update = F2(function (action,model) {
       var _p0 = action;
-      var updateSeat = function (seatFromModel) {
-         return _U.eq(seatFromModel.seatNo,
-         _p0._0.seatNo) ? _U.update(seatFromModel,
-         {occupied: $Basics.not(seatFromModel.occupied)}) : seatFromModel;
-      };
-      return {ctor: "_Tuple2"
-             ,_0: A2($List.map,updateSeat,model)
-             ,_1: $Effects.none};
+      if (_p0.ctor === "Toggle") {
+            var updateSeat = function (seatFromModel) {
+               return _U.eq(seatFromModel.seatNo,
+               _p0._0.seatNo) ? _U.update(seatFromModel,
+               {occupied: $Basics.not(seatFromModel.occupied)}) : seatFromModel;
+            };
+            return {ctor: "_Tuple2"
+                   ,_0: A2($List.map,updateSeat,model)
+                   ,_1: $Effects.none};
+         } else {
+            return {ctor: "_Tuple2",_0: _p0._0,_1: $Effects.none};
+         }
    });
+   var SetSeats = function (a) {
+      return {ctor: "SetSeats",_0: a};
+   };
+   var incomingActions = A2($Signal.map,SetSeats,seatLists);
    var Toggle = function (a) {    return {ctor: "Toggle",_0: a};};
    var seatItem = F2(function (address,seat) {
       var occupiedClass = seat.occupied ? "occupied" : "available";
@@ -11878,7 +11886,7 @@ Elm.SeatSaver.make = function (_elm) {
    var app = $StartApp.start({init: init
                              ,update: update
                              ,view: view
-                             ,inputs: _U.list([])});
+                             ,inputs: _U.list([incomingActions])});
    var main = app.html;
    var tasks = Elm.Native.Task.make(_elm).performSignal("tasks",
    app.tasks);
@@ -11888,7 +11896,9 @@ Elm.SeatSaver.make = function (_elm) {
                                   ,Seat: Seat
                                   ,init: init
                                   ,Toggle: Toggle
+                                  ,SetSeats: SetSeats
                                   ,update: update
                                   ,view: view
-                                  ,seatItem: seatItem};
+                                  ,seatItem: seatItem
+                                  ,incomingActions: incomingActions};
 };
