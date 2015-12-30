@@ -11833,6 +11833,18 @@ Elm.SeatSaver.make = function (_elm) {
    $StartApp = Elm.StartApp.make(_elm),
    $Task = Elm.Task.make(_elm);
    var _op = {};
+   var seatLists = Elm.Native.Port.make(_elm).inboundSignal("seatLists",
+   "SeatSaver.Model",
+   function (v) {
+      return typeof v === "object" && v instanceof Array ? Elm.Native.List.make(_elm).fromArray(v.map(function (v) {
+         return typeof v === "object" && "seatNo" in v && "occupied" in v ? {_: {}
+                                                                            ,seatNo: typeof v.seatNo === "number" && isFinite(v.seatNo) && Math.floor(v.seatNo) === v.seatNo ? v.seatNo : _U.badPort("an integer",
+                                                                            v.seatNo)
+                                                                            ,occupied: typeof v.occupied === "boolean" ? v.occupied : _U.badPort("a boolean (true or false)",
+                                                                            v.occupied)} : _U.badPort("an object with fields `seatNo`, `occupied`",
+         v);
+      })) : _U.badPort("an array",v);
+   });
    var update = F2(function (action,model) {
       var _p0 = action;
       var updateSeat = function (seatFromModel) {
@@ -11859,21 +11871,7 @@ Elm.SeatSaver.make = function (_elm) {
       _U.list([$Html$Attributes.$class("seats")]),
       A2($List.map,seatItem(address),model));
    });
-   var init = function () {
-      var seats = _U.list([{seatNo: 1,occupied: false}
-                          ,{seatNo: 2,occupied: false}
-                          ,{seatNo: 3,occupied: false}
-                          ,{seatNo: 4,occupied: false}
-                          ,{seatNo: 5,occupied: false}
-                          ,{seatNo: 6,occupied: false}
-                          ,{seatNo: 7,occupied: false}
-                          ,{seatNo: 8,occupied: false}
-                          ,{seatNo: 9,occupied: false}
-                          ,{seatNo: 10,occupied: false}
-                          ,{seatNo: 11,occupied: false}
-                          ,{seatNo: 12,occupied: false}]);
-      return {ctor: "_Tuple2",_0: seats,_1: $Effects.none};
-   }();
+   var init = {ctor: "_Tuple2",_0: _U.list([]),_1: $Effects.none};
    var Seat = F2(function (a,b) {
       return {seatNo: a,occupied: b};
    });

@@ -7,6 +7,7 @@ import StartApp
 import Effects exposing (Effects, Never)
 import Task exposing (Task)
 
+app: StartApp.App Model
 app = StartApp.start
   { init = init,
     update = update,
@@ -25,24 +26,7 @@ type alias Seat = { seatNo: Int, occupied: Bool }
 type alias Model = List Seat
 
 init : (Model, Effects Action)
-init =
-  let
-    seats =
-      [ { seatNo = 1, occupied = False }
-      , { seatNo = 2, occupied = False }
-      , { seatNo = 3, occupied = False }
-      , { seatNo = 4, occupied = False }
-      , { seatNo = 5, occupied = False }
-      , { seatNo = 6, occupied = False }
-      , { seatNo = 7, occupied = False }
-      , { seatNo = 8, occupied = False }
-      , { seatNo = 9, occupied = False }
-      , { seatNo = 10, occupied = False }
-      , { seatNo = 11, occupied = False }
-      , { seatNo = 12, occupied = False }
-      ]
-  in
-    (seats, Effects.none)
+init = ([], Effects.none)
 
 
 -- UPDATE
@@ -76,3 +60,8 @@ seatItem address seat =
     li
       [ class ("seat " ++ occupiedClass), onClick address (Toggle seat) ]
       [ text (toString seat.seatNo) ]
+
+
+-- SIGNALS
+
+port seatLists : Signal Model
